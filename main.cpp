@@ -4,62 +4,44 @@
 
 class Libro {
 private:
-    // Atributos privados (Encapsulación)
-    std::string titulo;
-    std::string autor;
-    std::string isbn;
-
+    std::string titulo, autor, isbn;
 public:
-    // 1. Constructor por defecto (campos vacíos)
-    Libro() : titulo("Sin titulo"), autor("Sin autor"), isbn("000-000") {}
-
-    // 2. Constructor con parámetros
-    Libro(std::string t, std::string a, std::string i) 
-        : titulo(t), autor(a), isbn(i) {}
-
-    // --- Métodos Públicos (Getters) ---
-    std::string getTitulo() const { return titulo; }
-    std::string getAutor() const { return autor; }
-    std::string getIsbn() const { return isbn; }
-
-    // --- Métodos Públicos (Setters) ---
-    void setTitulo(const std::string& t) { titulo = t; }
-    void setAutor(const std::string& a) { autor = a; }
-    void setIsbn(const std::string& i) { isbn = i; }
-
-    // Método para mostrar información con formato claro
+    Libro() : titulo(""), autor(""), isbn("") {}
+    Libro(std::string t, std::string a, std::string i) : titulo(t), autor(a), isbn(i) {}
+    
     void mostrarInfo() const {
-        std::cout << "------------------------------------" << std::endl;
-        std::cout << "TITULO: " << titulo << std::endl;
-        std::cout << "AUTOR:  " << autor << std::endl;
-        std::cout << "ISBN:   " << isbn << std::endl;
-        std::cout << "------------------------------------" << std::endl;
+        std::cout << "Libro: " << titulo << " | Autor: " << autor << " | ISBN: " << isbn << std::endl;
+    }
+};
+
+class Biblioteca {
+private:
+    std::vector<Libro> listaLibros;
+public:
+    void agregarLibro(const Libro& nuevoLibro) {
+        listaLibros.push_back(nuevoLibro);
+    }
+
+    void mostrarCatalogo() const {
+        if (listaLibros.empty()) {
+            std::cout << "La biblioteca esta vacia." << std::endl;
+            return;
+        }
+        std::cout << "\n--- CATALOGO DE LA BIBLIOTECA ---" << std::endl;
+        for (const auto& libro : listaLibros) {
+            libro.mostrarInfo();
+        }
     }
 };
 
 int main() {
-    // Crear al menos tres objetos usando ambos constructores
-    
-    // Objeto 1: Usando constructor con parámetros
-    Libro libro1("El Quijote", "Miguel de Cervantes", "978-8424922498");
+    Biblioteca miBiblioteca;
+    miBiblioteca.agregarLibro(Libro("El Quijote", "Cervantes", "123"));
+    miBiblioteca.agregarLibro(Libro("C++ Primer", "Lippman", "456"));
 
-    // Objeto 2: Usando constructor con parámetros
-    Libro libro2("C++ Primer", "Stanley Lippman", "978-0321714114");
+    miBiblioteca.mostrarCatalogo();
 
-    // Objeto 3: Usando constructor por defecto y luego setters
-    Libro libro3; 
-    libro3.setTitulo("Programacion ATS");
-    libro3.setAutor("Alejandro Taboada");
-    libro3.setIsbn("111-222-333");
-
-    // Mostrar la información de cada objeto
-    std::cout << "LISTADO DE LIBROS EN BIBLIOTECA:" << std::endl;
-    libro1.mostrarInfo();
-    libro2.mostrarInfo();
-    libro3.mostrarInfo();
-
-    std::cout << "\nPresiona Enter para salir..." << std::endl;
+    std::cout << "\nPresiona Enter para salir...";
     std::cin.get();
-
     return 0;
 }
